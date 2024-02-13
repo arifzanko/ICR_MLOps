@@ -164,4 +164,4 @@ cython_debug/
 datasets/
 
 # config file
-# steps/config.ini
+steps/config.ini
