@@ -3,6 +3,6 @@ from steps.model_train import train_model
 
 
 def train_pipeline():
-    ingest_df()
+    #ingest_df()
     train_model()
     print("Done")

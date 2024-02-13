@@ -1,0 +1,9 @@
+artifact_location: file:///c:/Users/arifz/Downloads/icr_mlops/ICR_MLOps/testing_mlflow_artifacts
+creation_time: 1707462284436
+experiment_id: '125495636243905864'
+last_update_time: 1707465477474
+lifecycle_stage: active
+name: testing_mlflow
+tags:
+  env: dev
+  version: 1.0.0
