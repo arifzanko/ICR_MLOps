@@ -10,6 +10,8 @@ confp = configparser.RawConfigParser()
 confp.read(os.path.abspath(os.path.join(Path(__file__).absolute(), os.pardir)) + '/config.ini')
 num_of_epochs = confp.get("train","num_of_epochs")
 image_size = confp.get("train","image_size")
+artifact_path = confp.get("mlflow", "artifact_path")
+model_name = confp.get("train", "model")
 
 def create_mlflow_experiment(experiment_name: str, artifact_location: str, tags:dict[str,Any]) -> str:
     """
@@ -68,6 +70,13 @@ def get_metrics():
     metrics_precision_B = float(last_row[4].replace(" ", ""))
     metrics_recall_B = float(last_row[5].replace(" ", ""))
     metrics_mAP50_B = float(last_row[6].replace(" ", ""))
+    metrics_mAP50_95_B = float(last_row[7].replace(" ", ""))
+    val_box_loss = float(last_row[8].replace(" ", ""))
+    val_cls_loss = float(last_row[9].replace(" ", ""))
+    val_dfl_loss = float(last_row[10].replace(" ", ""))
+    lr_pg0 = float(last_row[11].replace(" ", ""))
+    lr_pg1 = float(last_row[12].replace(" ", ""))
+    lr_pg2 = float(last_row[13].replace(" ", ""))
     
     metrics = {
     "train_box_loss": train_box_loss,
@@ -75,23 +84,70 @@ def get_metrics():
     "train_dfl_loss": train_dfl_loss,
     "metrics_precision_B" : metrics_precision_B,
     "metrics_recall_B" : metrics_recall_B,
-    "metrics_mAP50_B" : metrics_mAP50_B
+    "metrics_mAP50_B" : metrics_mAP50_B,
+    "metrics_mAP50_95_B" : metrics_mAP50_95_B,
+    "val_box_loss" : val_box_loss,
+    "val_cls_loss" : val_cls_loss,
+    "val_dfl_loss" : val_dfl_loss,
+    "lr_pg0" : lr_pg0,
+    "lr_pg1" : lr_pg1,
+    "lr_pg2" : lr_pg2,
     }
 
     return metrics
 
-if __name__ == "__main__":
+def get_artifacts(artifact_path):
+    current_path = os.getcwd()
+    complete_artifact_path = os.path.join(current_path, artifact_path)
+    file_names = [
+                  "args.yaml", 
+                  "confusion_matrix_normalized.png", 
+                  "confusion_matrix.png", 
+                  "F1_curve.png", 
+                  "labels_correlogram.jpg", 
+                  "labels.jpg", 
+                  "P_curve.png", 
+                  "PR_curve.png", 
+                  "R_curve.png", 
+                  "results.csv",
+                  "results.png",
+                  "train_batch0.jpg",
+                  "train_batch1.jpg",
+                  "train_batch2.jpg",
+                  "val_batch0_labels.jpg",
+                  "val_batch0_pred.jpg"
+                  ]
 
+    for file_name in file_names:
+        file_path = os.path.join(complete_artifact_path, file_name)
+        mlflow.log_artifact(local_path=file_path)
+
+    best_weights_path = os.path.join(complete_artifact_path, "weights/best.pt")
+    last_weights_path = os.path.join(complete_artifact_path, "weights/last.pt")
+    mlflow.log_artifact(local_path=best_weights_path, artifact_path="weights")
+    mlflow.log_artifact(local_path=last_weights_path, artifact_path="weights")
+
+def get_data_analysis():
+    current_path = os.getcwd()
+    data_test_path = os.path.join(current_path, "data_test_analysis.png")
+    data_train_path = os.path.join(current_path, "data_train_analysis.png")
+    data_valid_path = os.path.join(current_path, "data_valid_analysis.png")
+
+    mlflow.log_artifact(local_path=data_test_path, artifact_path="datasets_analysis")
+    mlflow.log_artifact(local_path=data_train_path, artifact_path="datasets_analysis")
+    mlflow.log_artifact(local_path=data_valid_path, artifact_path="datasets_analysis")
+
+def model_track():
     experiment_id = create_mlflow_experiment(
-        experiment_name="icr",
-        artifact_location="icr_artifacts",
-        tags={"env":"dev", "version":"1.0.0"},
-    )
-
+                                            experiment_name="icr",
+                                            artifact_location="icr_artifacts",
+                                            tags={"env":"dev", "version":"1.0.0"},
+                                            )
     experiment = get_mlflow_experiment(experiment_id=experiment_id)
     with mlflow.start_run(run_name="testing", experiment_id=experiment.experiment_id) as run:
 
         parameters = {
+            "model": model_name,
             "epochs": num_of_epochs,
             "image_size": image_size,
         }
@@ -99,6 +155,10 @@ if __name__ == "__main__":
 
         metrics = get_metrics()
         mlflow.log_metrics(metrics)
-
+        get_artifacts(artifact_path)
+        get_data_analysis()
         print("run_id: {}".format(run.info.run_id))
         print("experiment_id: {}".format(run.info.experiment_id))
+
+
+

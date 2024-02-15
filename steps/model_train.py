@@ -12,6 +12,7 @@ current_folder = os.getcwd()
 yaml_local_path = os.path.join(current_folder, 'datasets/data.yaml')
 num_of_epochs = int(confp.get("train","num_of_epochs"))
 image_size = int(confp.get("train", "image_size"))
+model_name = confp.get("train", "model")
 
 def train_model():
     """
@@ -25,9 +26,11 @@ def train_model():
     """
     try:
         # Load a model
-        model = YOLO('yolov8n.yaml')  # build a new model from YAML
-        model = YOLO('yolov8n.pt')  # load a pretrained model (recommended for training)
-        model = YOLO('yolov8n.yaml').load('yolov8n.pt')  # build from YAML and transfer weights
+        yaml_model_name = model_name + ".yaml"
+        pt_model_name = model_name + ".pt"
+        model = YOLO(yaml_model_name)  # build a new model from YAML
+        model = YOLO(pt_model_name)  # load a pretrained model (recommended for training)
+        model = YOLO(yaml_model_name).load(pt_model_name)  # build from YAML and transfer weights
 
         # Train the model
         results = model.train(data=yaml_local_path, epochs=num_of_epochs, imgsz=image_size)

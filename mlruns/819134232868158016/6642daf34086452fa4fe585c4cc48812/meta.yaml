@@ -1,8 +1,9 @@
 artifact_uri: file:///c:/Users/arifz/Downloads/icr_mlops/ICR_MLOps/icr_artifacts/6642daf34086452fa4fe585c4cc48812/artifacts
+deleted_time: 1707981351673
 end_time: 1707467858293
 entry_point_name: ''
 experiment_id: '819134232868158016'
-lifecycle_stage: active
+lifecycle_stage: deleted
 run_id: 6642daf34086452fa4fe585c4cc48812
 run_name: testing
 run_uuid: 6642daf34086452fa4fe585c4cc48812
