@@ -165,3 +165,6 @@ datasets/
 
 # config file
 steps/config.ini
+
+# Ignore runs folder
+runs/
