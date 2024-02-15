@@ -1,0 +1,16 @@
+artifact_uri: file:///c:/Users/arifz/Downloads/icr_mlops/ICR_MLOps/icr_artifacts/e63b2f993c944639925d309b0db005b0/artifacts
+deleted_time: 1707981351640
+end_time: 1707972156984
+entry_point_name: ''
+experiment_id: '819134232868158016'
+lifecycle_stage: deleted
+run_id: e63b2f993c944639925d309b0db005b0
+run_name: testing
+run_uuid: e63b2f993c944639925d309b0db005b0
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1707972156848
+status: 3
+tags: []
+user_id: arifz

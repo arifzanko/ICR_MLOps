@@ -1,0 +1,2 @@
+to run mlflow run command - mlflow ui
+# https://www.youtube.com/watch?v=bwhcEi3fryM&list=PLQqR_3C2fhUUkoXAcomOxcvfPwRn90U-g&index=3
