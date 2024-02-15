@@ -34,6 +34,7 @@ def train_model():
 
         # Train the model
         results = model.train(data=yaml_local_path, epochs=num_of_epochs, imgsz=image_size)
+        logging.info(f"Finish train model {pt_model_name}")
 
     except Exception as e:
         logging.error("Error in training model: {}".format(e))

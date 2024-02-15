@@ -1,0 +1,15 @@
+artifact_uri: file:///c:/Users/arifz/Downloads/icr_mlops/ICR_MLOps/icr_artifacts/7cd9b5e4bedd4d8db41c9b18588828ed/artifacts
+end_time: 1707982644648
+entry_point_name: ''
+experiment_id: '819134232868158016'
+lifecycle_stage: active
+run_id: 7cd9b5e4bedd4d8db41c9b18588828ed
+run_name: testing
+run_uuid: 7cd9b5e4bedd4d8db41c9b18588828ed
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1707982644505
+status: 3
+tags: []
+user_id: arifz

@@ -2,6 +2,7 @@ import os
 import matplotlib.pyplot as plt
 from pathlib import Path
 import configparser
+import logging
 
 confp = configparser.RawConfigParser()
 confp.read(os.path.abspath(os.path.join(Path(__file__).absolute(), os.pardir)) + '/config.ini')
@@ -59,14 +60,17 @@ def data_explore():
     train_file_path = os.path.join(current_path, datasets_train)
     save_train_file_path = os.path.join(current_path, 'data_train_analysis.png')
     counts_plot(train_file_path, save_train_file_path)
+    logging.info(f"Train data analysis saved in {save_train_file_path}.")
 
     test_file_path = os.path.join(current_path, datasets_test)
     save_test_file_path = os.path.join(current_path, 'data_test_analysis.png')
     counts_plot(test_file_path, save_test_file_path)
+    logging.info(f"Test data analysis saved in {save_test_file_path}.")
 
     valid_file_path = os.path.join(current_path, datasets_valid)
     save_valid_file_path = os.path.join(current_path, 'data_valid_analysis.png')
     counts_plot(valid_file_path, save_valid_file_path)
+    logging.info(f"Valid data analysis saved in {save_valid_file_path}.")
 
 
 

@@ -3,6 +3,7 @@ from typing import Any
 import os
 from pathlib import Path
 import configparser
+import logging
 import os
 import csv
 
@@ -23,7 +24,7 @@ def create_mlflow_experiment(experiment_name: str, artifact_location: str, tags:
             name=experiment_name, artifact_location=artifact_location, tags=tags
         )
     except:
-        print(f"Experiment {experiment_name} already exists.")
+        logging.info(f"Experiment {experiment_name} already exists.")
         experiment_id = mlflow.get_experiment_by_name(experiment_name).experiment_id
 
     return experiment_id
@@ -152,13 +153,18 @@ def model_track():
             "image_size": image_size,
         }
         mlflow.log_params(parameters)
+        logging.info("Parameters logged.")
 
         metrics = get_metrics()
         mlflow.log_metrics(metrics)
+        logging.info("Metrics logged.")
+
         get_artifacts(artifact_path)
+        logging.info("Artifacts logged.")
         get_data_analysis()
-        print("run_id: {}".format(run.info.run_id))
-        print("experiment_id: {}".format(run.info.experiment_id))
+        logging.info("Data analysis logged.")
+        logging.info("run_id: {}".format(run.info.run_id))
+
 
 
 
