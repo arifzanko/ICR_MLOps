@@ -56,7 +56,7 @@ def get_mlflow_experiment(experiment_id:str=None, experiment_name:str=None) -> m
 
 def get_metrics():
     current_path = os.getcwd()
-    train_output_path = "runs/detect/train/results.csv"
+    train_output_path = os.path.join("runs", "detect", "train", "results.csv")
 
     last_row = None
     csv_file_path = os.path.join(current_path, train_output_path)
@@ -159,7 +159,7 @@ def model_track():
         mlflow.log_metrics(metrics)
         logging.info("Metrics logged.")
 
-        get_artifacts(artifact_path)
+        get_artifacts(os.path.join("runs", "detect", "train"))
         logging.info("Artifacts logged.")
         get_data_analysis()
         logging.info("Data analysis logged.")
