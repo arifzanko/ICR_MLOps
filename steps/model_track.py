@@ -121,6 +121,7 @@ def get_artifacts(artifact_path):
 
     for file_name in file_names:
         file_path = os.path.join(complete_artifact_path, file_name)
+        print(file_path)
         mlflow.log_artifact(local_path=file_path)
 
     best_weights_path = os.path.join(complete_artifact_path, "weights", "best.pt")
@@ -159,7 +160,8 @@ def model_track():
         mlflow.log_metrics(metrics)
         logging.info("Metrics logged.")
 
-        get_artifacts(os.path.join("runs", "detect", "train"))
+        artifact_path = os.path.join("runs", "detect", "train")
+        get_artifacts(artifact_path)
         logging.info("Artifacts logged.")
         get_data_analysis()
         logging.info("Data analysis logged.")
