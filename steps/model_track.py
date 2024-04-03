@@ -123,8 +123,8 @@ def get_artifacts(artifact_path):
         file_path = os.path.join(complete_artifact_path, file_name)
         mlflow.log_artifact(local_path=file_path)
 
-    best_weights_path = os.path.join(complete_artifact_path, "weights/best.pt")
-    last_weights_path = os.path.join(complete_artifact_path, "weights/last.pt")
+    best_weights_path = os.path.join(complete_artifact_path, "weights", "best.pt")
+    last_weights_path = os.path.join(complete_artifact_path, "weights", "last.pt")
     mlflow.log_artifact(local_path=best_weights_path, artifact_path="weights")
     mlflow.log_artifact(local_path=last_weights_path, artifact_path="weights")
 
