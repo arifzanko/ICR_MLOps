@@ -140,32 +140,36 @@ def get_data_analysis():
     mlflow.log_artifact(local_path=data_valid_path, artifact_path="datasets_analysis")
 
 def model_track():
-    experiment_id = create_mlflow_experiment(
-                                            experiment_name="icr",
-                                            artifact_location="icr_artifacts",
-                                            tags={"env":"dev", "version":"1.0.0"},
-                                            )
-    experiment = get_mlflow_experiment(experiment_id=experiment_id)
-    with mlflow.start_run(run_name="testing", experiment_id=experiment.experiment_id) as run:
+    try:
+        experiment_id = create_mlflow_experiment(
+            experiment_name="icr",
+            artifact_location="icr_artifacts",
+            tags={"env": "dev", "version": "1.0.0"},
+        )
+        experiment = get_mlflow_experiment(experiment_id=experiment_id)
+        with mlflow.start_run(run_name="testing", experiment_id=experiment.experiment_id) as run:
+            parameters = {
+                "model": model_name,
+                "epochs": num_of_epochs,
+                "image_size": image_size,
+            }
+            mlflow.log_params(parameters)
+            logging.info("Parameters logged.")
 
-        parameters = {
-            "model": model_name,
-            "epochs": num_of_epochs,
-            "image_size": image_size,
-        }
-        mlflow.log_params(parameters)
-        logging.info("Parameters logged.")
+            metrics = get_metrics()
+            mlflow.log_metrics(metrics)
+            logging.info("Metrics logged.")
 
-        metrics = get_metrics()
-        mlflow.log_metrics(metrics)
-        logging.info("Metrics logged.")
-
-        artifact_path = os.path.join("runs", "detect", "train")
-        get_artifacts(artifact_path)
-        logging.info("Artifacts logged.")
-        get_data_analysis()
-        logging.info("Data analysis logged.")
-        logging.info("run_id: {}".format(run.info.run_id))
+            artifact_path = os.path.join("runs", "detect", "train")
+            get_artifacts(artifact_path)
+            logging.info("Artifacts logged.")
+            
+            get_data_analysis()
+            logging.info("Data analysis logged.")
+            
+            logging.info("run_id: {}".format(run.info.run_id))
+    except Exception as e:
+        logging.error(f"An error occurred: {e}")
 
 
 
